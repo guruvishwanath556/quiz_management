@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>User Analytics</h2>
+
+    <table class="table table-bordered">
+        <tr><th>Total Attempts</th><td>{{ total_attempts }}</td></tr>
+        <tr><th>Average Score</th><td>{{ avg_score }}</td></tr>
+    </table>
+
+    <h3>Your Quiz Performance</h3>
+    <canvas id="userQuizChart"></canvas>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var quizLabels = {{ quiz_labels | tojson }};
+        var quizData = {{ quiz_data | tojson }};
+
+        if (quizLabels.length === 0 || quizData.length === 0) {
+            console.warn("No data available for the chart.");
+            return;
+        }
+
+        var ctx = document.getElementById("userQuizChart").getContext("2d");
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: quizLabels,
+                datasets: [{
+                    label: "Score",
+                    data: quizData,
+                    backgroundColor: "#36A2EB"
+                }]
+            }
+        });
+    });
+</script>
+
+</div>
+{% endblock %}

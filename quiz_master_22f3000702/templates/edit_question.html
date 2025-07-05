@@ -1,0 +1,34 @@
+{% for question in questions %}
+    <form action="{{ url_for('edit_question', question_id=question.id) }}" method="POST">
+        <div class="mb-3">
+            <label class="form-label">Question:</label>
+            <textarea class="form-control" name="question_text" required>{{ question.text }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Option A:</label>
+            <input type="text" class="form-control" name="option_a" value="{{ question.option_a }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Option B:</label>
+            <input type="text" class="form-control" name="option_b" value="{{ question.option_b }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Option C:</label>
+            <input type="text" class="form-control" name="option_c" value="{{ question.option_c }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Option D:</label>
+            <input type="text" class="form-control" name="option_d" value="{{ question.option_d }}" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Correct Answer:</label>
+            <select class="form-select" name="correct_answer" required>
+                <option value="A" {% if question.correct_option == 'A' %}selected{% endif %}>A</option>
+                <option value="B" {% if question.correct_option == 'B' %}selected{% endif %}>B</option>
+                <option value="C" {% if question.correct_option == 'C' %}selected{% endif %}>C</option>
+                <option value="D" {% if question.correct_option == 'D' %}selected{% endif %}>D</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Question</button>
+    </form>
+{% endfor %}

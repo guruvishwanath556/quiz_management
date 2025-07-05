@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Create a New Chapter</h2>
+
+<form method="POST" action="{{ url_for('create_chapter') }}">
+    <label for="subject_id">Select Subject:</label>
+    <select name="subject_id" id="subject_id" required>
+        <option value="">-- Select Subject --</option>
+        {% for subject in subjects %}
+            <option value="{{ subject.id }}">{{ subject.name }}</option>
+        {% endfor %}
+    </select>
+
+    <label for="chapter_name">Chapter Name:</label>
+    <input type="text" name="chapter_name" required>
+  <label for="description">Description</label>
+    <input type="text" name="description" required>
+
+    <button type="submit">Create Chapter</button>
+</form>
+
+{% endblock %}

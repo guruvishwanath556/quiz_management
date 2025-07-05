@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2>Admin Analytics</h2>
+
+    <table class="table table-bordered">
+        <tr><th>Total Quizzes</th><td>{{ total_quizzes }}</td></tr>
+        <tr><th>Total Users</th><td>{{ total_users }}</td></tr>
+        <tr><th>Total Attempts</th><td>{{ total_attempts }}</td></tr>
+    </table>
+
+    <!-- Pie Chart: Quiz Attempts -->
+    <h3>Quiz Attempts Distribution</h3>
+    <canvas id="quizChart"></canvas>
+
+    <!-- Bar Chart: Users per Quiz -->
+    <h3 class="mt-4">Users vs Quizzes</h3>
+    <canvas id="userChart"></canvas>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var userLabels = {{ user_labels | tojson | safe }};
+        var userData = {{ user_data | tojson | safe }};
+        var quizLabels = {{ quiz_labels | tojson | safe }};
+        var quizData = {{ quiz_data | tojson | safe }};
+
+        console.log("User Labels:", userLabels);
+        console.log("User Data:", userData);
+        console.log("Quiz Labels:", quizLabels);
+        console.log("Quiz Data:", quizData);
+
+        // Only render charts if data is available
+        if (quizLabels.length > 0 && quizData.length > 0) {
+            var ctx1 = document.getElementById("quizChart").getContext("2d");
+            new Chart(ctx1, {
+                type: "pie",
+                data: {
+                    labels: quizLabels,
+                    datasets: [{
+                        data: quizData,
+                        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#8BC34A', '#FFA726']
+                    }]
+                }
+            });
+        } else {
+            console.warn("No quiz data available for Pie Chart.");
+        }
+
+        if (userLabels.length > 0 && userData.length > 0) {
+            var ctx2 = document.getElementById("userChart").getContext("2d");
+            new Chart(ctx2, {
+                type: "bar",
+                data: {
+                    labels: userLabels,
+                    datasets: [{
+                        label: "Users per Quiz",
+                        data: userData,
+                        backgroundColor: "#36A2EB"
+                    }]
+                }
+            });
+        } else {
+            console.warn("No user data available for Bar Chart.");
+        }
+    });
+</script>
+
+</div>
+{% endblock %}
